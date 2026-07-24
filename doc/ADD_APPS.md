@@ -26,15 +26,15 @@ helm install media-download charts-apps/media-download --namespace homeserver --
 ```
 
 Ahora tenemos que añadir a nuestro DNS las apps
-* pihole.omp.home
-* dashboard.omp.home
-* gitea.omp.home
-* qbittorrent.omp.home
-* jellyfin.omp.home
-* prowlarr.omp.home
-* radarr.omp.home
-* sonarr.omp.home
-* bazarr.omp.home
+* pihole.example.local
+* dashboard.example.local
+* gitea.example.local
+* qbittorrent.example.local
+* jellyfin.example.local
+* prowlarr.example.local
+* radarr.example.local
+* sonarr.example.local
+* bazarr.example.local
 
 
 Vamos a configurar las apps desde [doc/CONFIGURE_SERVICES.md](https://github.com/omarmpastor/homeserver-k3s/blob/main/doc/CONFIGURE_SERVICES.md)
