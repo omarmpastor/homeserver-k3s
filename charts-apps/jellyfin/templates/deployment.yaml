@@ -67,15 +67,15 @@ spec:
 
         - name: movies
           hostPath:
-            path: {{ printf "%s/%s" .Values.storage.mountPathConfig "media/movies" | quote }}
+            path: {{ printf "%s/%s" .Values.storage.localStoragePath "media/movies" | quote }}
             type: Directory
 
         - name: tvshows
           hostPath:
-            path: {{ printf "%s/%s" .Values.storage.mountPathConfig "media/tv" | quote }}
+            path: {{ printf "%s/%s" .Values.storage.localStoragePath "media/tv" | quote }}
             type: Directory
 
         - name: videos
           hostPath:
-            path: {{ printf "%s/%s" .Values.storage.mountPathConfig "media/videos" | quote }}
+            path: {{ printf "%s/%s" .Values.storage.localStoragePath "media/videos" | quote }}
             type: Directory
