@@ -25,16 +25,18 @@ helm install jellyfin charts-apps/jellyfin --namespace homeserver --set httpRout
 helm install media-download charts-apps/media-download --namespace homeserver --set httpRoute.domain="example.local"
 ```
 
+Ahora tenemos que añadir a nuestro DNS las apps
+* pihole.omp.home
+* dashboard.omp.home
+* gitea.omp.home
+* qbittorrent.omp.home
+* jellyfin.omp.home
+* prowlarr.omp.home
+* radarr.omp.home
+* sonarr.omp.home
+* bazarr.omp.home
 
 
-
-
-
-
-
-
-```bash
-```
-
+Vamos a configurar las apps desde [doc/CONFIGURE_SERVICES.md](https://github.com/omarmpastor/homeserver-k3s/blob/main/doc/CONFIGURE_SERVICES.md)
 
 

@@ -156,7 +156,7 @@ git clone https://github.com/omarmpastor/homeserver-k3s.git
 cd homeserver-k3s
 ```
 
-Configuramos Cert-manager, gateway y secrets
+Configuramos Cert-manager y gateway
 ```bash
 helm install infra ./infra \
   --set wildcardCertificate.commonName="*.example.local" \
@@ -165,9 +165,9 @@ helm install infra ./infra \
   --set wildcardCertificate.dnsNames[1]="example.local"
 ```
 
-Ahora añadimos las apps desde [doc/ADD_APPS.md](https://github.com/omarmpastor/homeserver-k3s/src/branch/main/doc/ADD_APPS.md)
+Ahora añadimos las apps desde [doc/ADD_APPS.md](https://github.com/omarmpastor/homeserver-k3s/blob/main/doc/ADD_APPS.md)
 
 
-Para configurarlas una vez añadidas desde [doc/CONFIGURE_SERVICES.md](https://github.com/omarmpastor/homeserver-k3s/src/branch/main/doc/CONFIGURE_SERVICES.md)
+Para configurarlas una vez añadidas desde [doc/CONFIGURE_SERVICES.md](https://github.com/omarmpastor/homeserver-k3s/blob/main/doc/CONFIGURE_SERVICES.md)
 
 

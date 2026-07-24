@@ -1,18 +1,5 @@
 # Configuración de apps y servicios
 
-Ahora vamos a ir configurando las apps, lo primero es añadir a nuestro DNS las entradas
-
-Añadimos las apps (estas mismas entradas las añadimos más tarde a dashboard.omp.home):
-* pihole.omp.home
-* dashboard.omp.home
-* gitea.omp.home
-* qbittorrent.omp.home
-* jellyfin.omp.home
-* prowlarr.omp.home
-* radarr.omp.home
-* sonarr.omp.home
-* bazarr.omp.home
-
 ## qBittorrent
 
 Lo primero necesitamos conocer el password que nos ha puesto por defecto. Esto está en los logs del pod (Ejecutamos: `kubectl logs -n homeserver $(kubectl get pods -n homeserver -l app=qbittorrent -o name)`)
