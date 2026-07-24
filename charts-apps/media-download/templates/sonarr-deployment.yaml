@@ -33,9 +33,6 @@ spec:
             
             - name: TZ
               value: Europe/Madrid
-
-            - name: WEBUI_PORT
-              value: {{ .Values.sonarr.service.targetPort }}
           
           ports:
             - name: {{ .Values.sonarr.service.portHttpName }}
