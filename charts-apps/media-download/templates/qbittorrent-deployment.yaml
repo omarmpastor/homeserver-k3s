@@ -35,7 +35,7 @@ spec:
               value: Europe/Madrid
 
             - name: WEBUI_PORT
-              value: {{ .Values.qbittorrent.service.targetPort }}
+              value: {{ .Values.qbittorrent.service.targetPort | quote }}
           
           ports:
             - name: {{ .Values.qbittorrent.service.portHttpName }}
