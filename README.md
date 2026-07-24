@@ -165,6 +165,13 @@ helm install infra ./infra \
   --set wildcardCertificate.dnsNames[1]="example.local"
 ```
 
+Exportamos nuestra CA para instalarlo en equipos (entidades raiz de confianza)
+```bash
+kubectl get secret internal-root-ca-secret \
+  -n cert-manager \
+  -o jsonpath='{.data.tls\.crt}' | base64 -d > homeserver-root-ca.crt
+```
+
 Ahora añadimos las apps desde [doc/ADD_APPS.md](https://github.com/omarmpastor/homeserver-k3s/blob/main/doc/ADD_APPS.md)
 
 
