@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.radarr.appName }}-deployment
+
+spec:
+  replicas: {{ .Values.radarr.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ .Values.radarr.appName }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.radarr.appName }}
+    
+    spec:
+      securityContext:
+        fsGroup: 1000
+    
+      containers:
+        - name: {{ .Values.radarr.appName }}
+          image: {{ printf "%s:%s" .Values.radarr.image.repository .Values.radarr.image.tag | quote }}
+          imagePullPolicy: {{ .Values.radarr.image.pullPolicy }}
+
+          env:
+            - name: PUID
+              value: "1000"
+            
+            - name: PGID
+              value: "1000"
+            
+            - name: TZ
+              value: Europe/Madrid
+
+            - name: WEBUI_PORT
+              value: {{ .Values.radarr.service.targetPort }}
+          
+          ports:
+            - name: {{ .Values.radarr.service.portHttpName }}
+              containerPort: {{ .Values.radarr.service.targetPort }}
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.radarr.storage.mountPathConfig }}
+
+            - name: downloads
+              mountPath: /downloads
+
+            - name: tvshows
+              mountPath: /storage/Movies
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.radarr.appName }}-pvc-config
+
+        - name: downloads
+          hostPath:
+            path: {{ printf "%s/%s" .Values.localStoragePath "torrents" | quote }}
+            type: Directory
+
+        - name: movies
+          hostPath:
+            path: {{ printf "%s/%s" .Values.localStoragePath "media/movies" | quote }}
+            type: Directory

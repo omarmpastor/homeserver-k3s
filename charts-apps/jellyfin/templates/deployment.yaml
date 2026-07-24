@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mi-chart.name" . }}-deployment
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ include "mi-chart.name" . }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ include "mi-chart.name" . }}
+    
+    spec:
+      securityContext:
+        fsGroup: 1000
+  
+      containers:
+        - name: {{ include "mi-chart.name" . }}
+          image: {{ printf "%s:%s" .Values.image.repository .Values.image.tag | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          env:
+            - name: PUID
+              value: "1000"
+            
+            - name: PGID
+              value: "1000"
+            
+            - name: TZ
+              value: Europe/Madrid
+          
+          ports:
+            - name: {{ .Values.service.portHttpName }}
+              containerPort: {{ .Values.service.targetPort }}
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.storage.mountPathConfig }}
+
+            - name: cache
+              mountPath: /config/cache
+
+            - name: movies
+              mountPath: /data/movies
+              readOnly: true
+
+            - name: tvshows
+              mountPath: /data/tvshows
+              readOnly: true
+
+            - name: videos
+              mountPath: /data/videos
+              readOnly: true
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "mi-chart.name" . }}-pvc-config
+
+        - name: cache
+          emptyDir: {}
+
+        - name: movies
+          hostPath:
+            path: {{ printf "%s/%s" .Values.storage.mountPathConfig "media/movies" | quote }}
+            type: Directory
+
+        - name: tvshows
+          hostPath:
+            path: {{ printf "%s/%s" .Values.storage.mountPathConfig "media/tv" | quote }}
+            type: Directory
+
+        - name: videos
+          hostPath:
+            path: {{ printf "%s/%s" .Values.storage.mountPathConfig "media/videos" | quote }}
+            type: Directory

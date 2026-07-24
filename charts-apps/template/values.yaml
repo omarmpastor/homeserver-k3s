@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: image_name
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+  portHttpName: http
+
+httpRoute:
+  parentRefs:
+    - name: cluster-gateway
+      namespace: kube-system
+  
+  domain: "localdomain"
+
+pvc:
+  storageSize: 1Gi
+
+storage:
+  mountPathConfig: image_path_config
+  localStoragePath: "/mnt/storage"

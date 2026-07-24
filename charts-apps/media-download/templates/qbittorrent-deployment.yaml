@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.qbittorrent.appName }}-deployment
+
+spec:
+  replicas: {{ .Values.qbittorrent.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ .Values.qbittorrent.appName }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.qbittorrent.appName }}
+    
+    spec:
+      securityContext:
+        fsGroup: 1000
+    
+      containers:
+        - name: {{ .Values.qbittorrent.appName }}
+          image: {{ printf "%s:%s" .Values.qbittorrent.image.repository .Values.qbittorrent.image.tag | quote }}
+          imagePullPolicy: {{ .Values.qbittorrent.image.pullPolicy }}
+
+          env:
+            - name: PUID
+              value: "1000"
+            
+            - name: PGID
+              value: "1000"
+            
+            - name: TZ
+              value: Europe/Madrid
+
+            - name: WEBUI_PORT
+              value: {{ .Values.qbittorrent.service.targetPort }}
+          
+          ports:
+            - name: {{ .Values.qbittorrent.service.portHttpName }}
+              containerPort: {{ .Values.qbittorrent.service.targetPort }}
+
+            - containerPort: 6881
+              name: bittorrent-tcp
+              protocol: TCP
+
+            - containerPort: 6881
+              name: bittorrent-udp
+              protocol: UDP
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.qbittorrent.storage.mountPathConfig }}
+
+            - name: downloads
+              mountPath: /downloads
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.qbittorrent.appName }}-pvc-config
+
+        - name: downloads
+          hostPath:
+            path: {{ printf "%s/%s" .Values.localStoragePath "torrents" | quote }}
+            type: Directory

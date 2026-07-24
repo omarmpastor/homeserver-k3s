@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mi-chart.name" . }}-svc
+  
+spec:
+  selector:
+    app: {{ include "mi-chart.name" . }}
+  
+  ports:
+    - name: {{ .Values.service.portHttpName }}
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+  
+  type: {{ .Values.service.type }}

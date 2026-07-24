@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.sonarr.appName }}-deployment
+
+spec:
+  replicas: {{ .Values.sonarr.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ .Values.sonarr.appName }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.sonarr.appName }}
+    
+    spec:
+      securityContext:
+        fsGroup: 1000
+    
+      containers:
+        - name: {{ .Values.sonarr.appName }}
+          image: {{ printf "%s:%s" .Values.sonarr.image.repository .Values.sonarr.image.tag | quote }}
+          imagePullPolicy: {{ .Values.sonarr.image.pullPolicy }}
+
+          env:
+            - name: PUID
+              value: "1000"
+            
+            - name: PGID
+              value: "1000"
+            
+            - name: TZ
+              value: Europe/Madrid
+
+            - name: WEBUI_PORT
+              value: {{ .Values.sonarr.service.targetPort }}
+          
+          ports:
+            - name: {{ .Values.sonarr.service.portHttpName }}
+              containerPort: {{ .Values.sonarr.service.targetPort }}
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.sonarr.storage.mountPathConfig }}
+
+            - name: downloads
+              mountPath: /downloads
+
+            - name: tvshows
+              mountPath: /storage/TV
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.sonarr.appName }}-pvc-config
+
+        - name: downloads
+          hostPath:
+            path: {{ printf "%s/%s" .Values.localStoragePath "torrents" | quote }}
+            type: Directory
+
+        - name: tvshows
+          hostPath:
+            path: {{ printf "%s/%s" .Values.localStoragePath "media/tv" | quote }}
+            type: Directory

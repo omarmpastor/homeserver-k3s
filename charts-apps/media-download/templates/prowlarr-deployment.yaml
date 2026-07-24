@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.prowlarr.appName }}-deployment
+
+spec:
+  replicas: {{ .Values.prowlarr.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ .Values.prowlarr.appName }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.prowlarr.appName }}
+    
+    spec:
+      securityContext:
+        fsGroup: 1000
+    
+      containers:
+        - name: {{ .Values.prowlarr.appName }}
+          image: {{ printf "%s:%s" .Values.prowlarr.image.repository .Values.prowlarr.image.tag | quote }}
+          imagePullPolicy: {{ .Values.prowlarr.image.pullPolicy }}
+
+          env:
+            - name: PUID
+              value: "1000"
+            
+            - name: PGID
+              value: "1000"
+            
+            - name: TZ
+              value: Europe/Madrid
+          
+          ports:
+            - name: {{ .Values.prowlarr.service.portHttpName }}
+              containerPort: {{ .Values.prowlarr.service.targetPort }}
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.prowlarr.storage.mountPathConfig }}
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.prowlarr.appName }}-pvc-config

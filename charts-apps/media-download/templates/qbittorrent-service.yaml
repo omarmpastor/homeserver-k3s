@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.qbittorrent.appName }}-svc
+
+spec:
+  selector:
+    app: {{ .Values.qbittorrent.appName }}
+  
+  ports:
+    - name: {{ .Values.qbittorrent.service.portHttpName }}
+      port: {{ .Values.qbittorrent.service.port }}
+      targetPort: {{ .Values.qbittorrent.service.targetPort }}
+
+    - name: bittorrent-tcp
+      port: 6881
+      targetPort: 6881
+      protocol: TCP
+
+    - name: bittorrent-udp
+      port: 6881
+      targetPort: 6881
+      protocol: UDP
+  
+  type: {{ .Values.qbittorrent.service.type }}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.sonarr.appName }}-svc
+
+spec:
+  selector:
+    app: {{ .Values.sonarr.appName }}
+  
+  ports:
+    - name: {{ .Values.sonarr.service.portHttpName }}
+      port: {{ .Values.sonarr.service.port }}
+      targetPort: {{ .Values.sonarr.service.targetPort }}
+  
+  type: {{ .Values.sonarr.service.type }}

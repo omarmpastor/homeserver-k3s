@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.jackett.appName }}-deployment
+
+spec:
+  replicas: {{ .Values.jackett.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ .Values.jackett.appName }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.jackett.appName }}
+    
+    spec:
+      securityContext:
+        fsGroup: 1000
+    
+      containers:
+        - name: {{ .Values.jackett.appName }}
+          image: {{ printf "%s:%s" .Values.jackett.image.repository .Values.jackett.image.tag | quote }}
+          imagePullPolicy: {{ .Values.jackett.image.pullPolicy }}
+
+          env:
+            - name: PUID
+              value: "1000"
+            
+            - name: PGID
+              value: "1000"
+            
+            - name: TZ
+              value: Europe/Madrid
+          
+          ports:
+            - name: {{ .Values.jackett.service.portHttpName }}
+              containerPort: {{ .Values.jackett.service.targetPort }}
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.jackett.storage.mountPathConfig }}
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.jackett.appName }}-pvc-config

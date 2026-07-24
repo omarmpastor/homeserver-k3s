@@ -1,0 +1,131 @@
+# Configuración de apps y servicios
+
+Ahora vamos a ir configurando las apps, lo primero es añadir a nuestro DNS las entradas
+
+Añadimos las apps (estas mismas entradas las añadimos más tarde a dashboard.omp.home):
+* pihole.omp.home
+* dashboard.omp.home
+* gitea.omp.home
+* qbittorrent.omp.home
+* jellyfin.omp.home
+* prowlarr.omp.home
+* radarr.omp.home
+* sonarr.omp.home
+* bazarr.omp.home
+
+## qBittorrent
+
+Lo primero necesitamos conocer el password que nos ha puesto por defecto. Esto está en los logs del pod (Ejecutamos: `kubectl logs -n homeserver $(kubectl get pods -n homeserver -l app=qbittorrent -o name)`)
+
+Vamos a https://qbittorrent.omp.home
+
+Entramos en la interfaz con `admin` y el password temporal que nos ha creado:
+- Vamos a Tools > Options > WebUI y cambiamos el password. Si no queremos que nos pida usuario y contraseña, marcamos: `Bypass authentication for clients in whitelisted IP subnets` y le añadimos nuestra red `192.168.1.0/24`
+- Vamos a Tools > Options > Behavior > User interface language > Español
+
+### Sonarr/Radarr
+
+Nos conectamos a https://radarr.omp.home para radarr y https://sonarr.omp.home para sonarr
+
+La primera vez que nos conectemos nos pedira que establezcamos un login:
+
+* Authentication Method: Form (Login Page)
+* Authentication Required: Disabled for Local Addresses
+* Username: [username]
+* Password: [password]
+
+Vamos a Settings -> Media Management -> Pinchamos en el icono de arriba "Show Advanced"
+- Dejamos marcado -> Use Hardlinks instead of Copy
+- Al final en el botón Add Root Folder, añadimos -> "/storage/Movies/" para radarr y "/storage/TV/"
+- Guardamos cambios
+
+Vamos a Settings -> Download Clients -> + -> qBittorrent
+- Host: qbittorrent
+- Port: 8090
+- Username: [username]
+- Password: [password]
+- Dejamos marcado: Remove imported downloads from dowload client history
+
+Vamos a Settings -> Profiles -> Entramos a cada uno de ellos -> Language -> Spanish (sino no nos busara en prowlarr en español)
+
+### Jackett
+
+Nos conectamos a https://jackett.omp.home
+
+Ponemos una contraseña de administrador en [Admin password]
+Pinchamos en Add Indexer -> DonTorrent (tarda en añadirlo, comprueba un rato)
+
+### Prowlarr
+
+Nos conectamos a https://prowlarr.omp.home
+
+La primera vez que nos conectemos nos pedira que establezcamos un login:
+
+* Authentication Method: Form (Login Page)
+* Authentication Required: Disabled for Local Addresses
+* Username: [username]
+* Password: [password]
+
+Vamos a Settings -> Apps -> Añadimos Radarr
+Prowlarr Server: https://prowlarr:9696
+Radarr Server: https://radarr:7878
+API Key: Vamos a radarr -> Settings -> General -> API Key y la copiamos
+
+Vamos a Settings -> Apps -> Añadimos Sonarr
+Prowlarr Server: https://prowlarr:9696
+Sonarr Server: https://sonarr:8989
+API Key: Vamos a sonarr -> Settings -> General -> API Key y la copiamos
+
+Vamos a Settings -> Download Clients -> + -> qBittorrent
+- Host: qbittorrent
+- Port: 8090
+- Username: [username]
+- Password: [password]
+
+Ahora vamos a Indexers (No a Settings > Indexers) -> Add Indexer y añadimos los que queramos
+
+* Elitetorrent-wf
+* MoviesDVDR
+* Vamos a añadir DonTorrent desde Jackett (no me va!!):
+  * Le damos a añadir y elegimos "Generic Torznab"
+  * Name: DonTorrent
+  * Enable: Activado
+  * Redirect: Desactivado
+  * URL (hay un botón "Copy Torznab Feed" en jackett): https://[IP_SERVIDOR]:9117/api/v2.0/indexers/dontorrent/results/torznab/
+  * API Key: Copiamos la API key de Jackett
+  * Pinchamos en Test y Guardamos
+
+## Jellyfin
+
+Arrancamos el proyecto: Desde arcane > Proyectos > Elegimos jellyfin > Subir
+
+Vamos a https://jellyfin.omp.home
+
+Usamos el asistente para configurar el servidor estableciendo en Español y poniendo usuario y contraseña:
+* Username: [username]
+* Password: [password]
+
+Configuramos 4 bibliotecas multimedia
+- Tipo: Peliculas, Nombre: Peliculas, Carpetas: /data/movies, Idioma preferido de visualizado: Spanish Castillian, Pais: Spain
+- Tipo: Series, Nombre: Series, Carpetas: /data/tvshows, Idioma preferido de visualizado: Spanish Castillian, Pais: Spain
+- Tipo: Vídeos caseros y fotos, Nombre: Vídeos, Carpetas: /data/videos
+- Tipo: Vídeos caseros y fotos, Nombre: Youtube, Carpetas: /data/youtube
+
+Dejamos marcado: Permitir conexiones remotas a este servidor
+
+Vamos a Panel de Control > Usuarios y añadimos omar
+
+## Gitea
+
+Arrancamos el proyecto: Desde arcane > Proyectos > Elegimos gitea > Subir
+
+Vamos a https://gitea.omp.home
+
+Ahora nos sale la configuracion por defecto, vamos bajo del todo y pinchamos en "Instalar Gitea"
+
+Nos aparece para crear un usuario:
+* Username: [username]
+* Email: [username]@omp.home
+* Password: [password]
+
+Ahora vamos a https://gitea.omp.home/-/admin/users y creamos un usuario

@@ -1,0 +1,9 @@
+appSecret:
+  name: apps-secret
+  type: Opaque
+
+  data:
+    APP_USER: user
+    APP_PASSWORD: password
+
+namespace: homeserver

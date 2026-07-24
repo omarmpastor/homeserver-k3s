@@ -1,0 +1,23 @@
+rootCA:
+  issuerName: internal-root-ca-issuer
+  namespace: cert-manager
+  certificateName: internal-root-ca-certificate
+  certificateCommonName: internal-root-ca
+  certificateSecretName: internal-root-ca-secret
+  duration: 43800h       # 5 year
+  renewBefore: 720h      # 30 days
+
+clusterIssuer:
+  name: internal-cluster-issuer
+
+wildcardCertificate:
+  name: wildcard-certificate
+  namespace: kube-system
+  secretName: wildcard-tls-secret
+  duration: 2160h
+  renewBefore: 360h
+  subjectOrganization: Example Organization
+  commonName: "*.example.local"
+  dnsNames:
+    - "*.example.local"
+    - "example.local"

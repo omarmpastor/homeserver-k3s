@@ -1,0 +1,22 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Values.sonarr.appName }}-route
+
+spec:
+  parentRefs:
+    - name: cluster-gateway
+      namespace: kube-system
+
+  hostnames:
+  - {{ printf "%s.%s" .Values.sonarr.appName .Values.httpRoute.domain | quote }}
+
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+
+      backendRefs:
+      - name: {{ .Values.sonarr.appName }}-svc
+        port:  {{ .Values.sonarr.service.targetPort }}

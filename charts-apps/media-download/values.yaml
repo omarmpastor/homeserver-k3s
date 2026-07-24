@@ -1,0 +1,114 @@
+prowlarr:
+  appName: prowlarr
+  
+  replicaCount: 1
+  
+  image:
+    repository: "lscr.io/linuxserver/prowlarr"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  service:
+    type: ClusterIP
+    port: 9696
+    targetPort: 9696
+    portHttpName: http
+  
+  pvc:
+    storageSize: 1Gi
+
+  storage:
+    mountPathConfig: "/config"
+
+jackett:
+  appName: jackett
+  
+  replicaCount: 1
+  
+  image:
+    repository: "lscr.io/linuxserver/jackett"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  service:
+    type: ClusterIP
+    port: 9117
+    targetPort: 9117
+    portHttpName: http
+  
+  pvc:
+    storageSize: 1Gi
+
+  storage:
+    mountPathConfig: "/config"
+
+qbittorrent:
+  appName: qbittorrent
+
+  image:
+    repository: "lscr.io/linuxserver/qbittorrent"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  service:
+    type: ClusterIP
+    port: 8090
+    targetPort: 8090
+    portHttpName: http
+  
+  pvc:
+    storageSize: 1Gi
+
+  storage:
+    mountPathConfig: "/config"
+
+sonarr:
+  appName: sonarr
+
+  image:
+    repository: "lscr.io/linuxserver/sonarr"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  service:
+    type: ClusterIP
+    port: 8989
+    targetPort: 8989
+    portHttpName: http
+  
+  pvc:
+    storageSize: 1Gi
+
+  storage:
+    mountPathConfig: "/config"
+
+radarr:
+  appName: radarr
+
+  image:
+    repository: "lscr.io/linuxserver/radarr"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  service:
+    type: ClusterIP
+    port: 7878
+    targetPort: 7878
+    portHttpName: http
+  
+  pvc:
+    storageSize: 1Gi
+
+  storage:
+    mountPathConfig: "/config"
+
+
+httpRoute:
+  parentRefs:
+    - name: cluster-gateway
+      namespace: kube-system
+  
+  domain: "omp.home"
+
+
+localStoragePath: "/mnt/storage"

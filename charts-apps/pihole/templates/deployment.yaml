@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mi-chart.name" . }}-deployment
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ include "mi-chart.name" . }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ include "mi-chart.name" . }}
+    
+    spec:      
+      containers:
+        - name: {{ include "mi-chart.name" . }}
+          image: {{ printf "%s:%s" .Values.image.repository .Values.image.tag | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          ports:
+            - name: {{ .Values.service.portHttpName }}
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          
+            - name: dns-tcp
+              containerPort: 53
+              hostPort: 53
+              protocol: TCP
+          
+            - name: dns-udp
+              containerPort: 53
+              hostPort: 53
+              protocol: UDP
+
+          env:
+          - name: TZ
+            value: Europe/Madrid
+  
+          - name: FTLCONF_webserver_api_password
+            valueFrom:
+              secretKeyRef:
+                name: apps-secret
+                key: APP_PASSWORD
+  
+          - name: FTLCONF_dns_listeningMode
+            value: "ALL"
+          
+          ports:
+            - name: {{ .Values.service.portHttpName }}
+              containerPort: {{ .Values.service.targetPort }}
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.storage.mountPathConfig }}
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "mi-chart.name" . }}-pvc-config

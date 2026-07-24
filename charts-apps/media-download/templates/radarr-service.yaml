@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.radarr.appName }}-svc
+
+spec:
+  selector:
+    app: {{ .Values.radarr.appName }}
+  
+  ports:
+    - name: {{ .Values.radarr.service.portHttpName }}
+      port: {{ .Values.radarr.service.port }}
+      targetPort: {{ .Values.radarr.service.targetPort }}
+  
+  type: {{ .Values.radarr.service.type }}

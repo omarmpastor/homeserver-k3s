@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mi-chart.name" . }}-deployment
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ include "mi-chart.name" . }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ include "mi-chart.name" . }}
+    
+    spec:
+      securityContext:
+        fsGroup: 1000
+      
+      containers:
+        - name: {{ include "mi-chart.name" . }}
+          image: {{ printf "%s:%s" .Values.image.repository .Values.image.tag | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          env:
+            - name: PUID
+              value: "1000"
+            
+            - name: PGID
+              value: "1000"
+            
+            - name: TZ
+              value: Europe/Madrid
+          
+          ports:
+            - name: {{ .Values.service.portHttpName }}
+              containerPort: {{ .Values.service.targetPort }}
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.storage.mountPathConfig }}
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "mi-chart.name" . }}-pvc-config

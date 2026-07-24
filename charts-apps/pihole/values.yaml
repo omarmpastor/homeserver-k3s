@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: pihole/pihole
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+  portHttpName: http
+
+httpRoute:
+  parentRefs:
+    - name: cluster-gateway
+      namespace: kube-system
+  
+  domain: "omp.home"
+
+pvc:
+  storageSize: 1Gi
+
+storage:
+  mountPathConfig: "/etc/pihole"
+  localStoragePath: "/mnt/storage"

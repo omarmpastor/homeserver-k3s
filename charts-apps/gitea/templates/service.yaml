@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mi-chart.name" . }}-svc
+
+spec:
+  selector:
+    app: {{ include "mi-chart.name" . }}
+  
+  ports:
+    - name: {{ .Values.service.portHttpName }}
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+    
+    - name: ssh
+      port: 2222
+      targetPort: 2222
+  
+  type: {{ .Values.service.type }}

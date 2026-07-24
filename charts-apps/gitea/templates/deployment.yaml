@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mi-chart.name" . }}-deployment
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ include "mi-chart.name" . }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ include "mi-chart.name" . }}
+    
+    spec:
+      containers:
+        - name: {{ include "mi-chart.name" . }}
+          image: {{ printf "%s:%s" .Values.image.repository .Values.image.tag | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          
+          ports:
+            - name: {{ .Values.service.portHttpName }}
+              containerPort: {{ .Values.service.targetPort }}
+
+            - name: ssh
+              containerPort: 22
+              hostPort: 2222
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.storage.mountPathConfig }}
+
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "mi-chart.name" . }}-pvc-config
+
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+            type: File
