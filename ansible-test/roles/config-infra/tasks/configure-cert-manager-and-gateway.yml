@@ -1,0 +1,12 @@
+- name: Instalar el chart local de infraestructura
+  kubernetes.core.helm:
+    name: infra
+    chart_ref: "{{ ansible_env.HOME }}/homeserver-k3s/infra"
+    release_namespace: kube-system
+    values:
+      wildcardCertificate:
+        commonName: "*.{{ domain_name }}"
+        subjectOrganization: "{{ org_name }}"
+        dnsNames:
+          - "*.{{ domain_name }}"
+          - "{{ domain_name }}"

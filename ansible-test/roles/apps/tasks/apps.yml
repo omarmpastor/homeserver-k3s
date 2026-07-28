@@ -1,0 +1,9 @@
+- name: Instalar la release de Helm dashboard en el namespace homeserver
+  kubernetes.core.helm:
+    name: config
+    chart_ref: "{{ repo_path }}/charts-apps/dashboard"
+    release_namespace: "{{ chart_namespace }}"
+    kubeconfig: "{{ ansible_env.HOME }}/.kube/config"
+    values:
+      httpRoute:
+        domain: "{{ domain_name }}"

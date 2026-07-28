@@ -1,0 +1,23 @@
+---
+- name: Crear archivo de configuración de red
+  ansible.builtin.copy:
+    dest: "/etc/network/interfaces.d/{{ iface_name }}"
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      auto {{ iface_name }}
+      iface {{ iface_name }} inet static
+          address {{ ip_address }}
+          netmask {{ netmask }}
+          gateway {{ gateway }}
+          dns-nameservers {{ dns_servers }}
+  register: network_config
+  become: true
+
+- name: Reiniciar servicio de red
+  ansible.builtin.systemd:
+    name: networking
+    state: restarted
+  when: network_config.changed
+  become: true

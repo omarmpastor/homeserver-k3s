@@ -1,0 +1,9 @@
+- name: Debug Ansible project
+  hosts: all
+  gather_facts: true
+
+  roles:
+    #- base
+    #- k3s
+    #- config-infra
+    - apps

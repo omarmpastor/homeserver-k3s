@@ -1,0 +1,12 @@
+- name: Desplegar infraestructura y apps en Localhost
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Clonar repositorio de homeserver-k3s
+      ansible.builtin.git:
+        repo: 'https://github.com/omarmpastor/homeserver-k3s.git'
+        dest: "{{ repo_path }}"
+        version: main
+        force: false

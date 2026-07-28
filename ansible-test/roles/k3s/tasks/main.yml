@@ -1,0 +1,7 @@
+---
+- import_tasks: k3s-install.yml
+- import_tasks: k3s-kubeconfig.yml
+- import_tasks: gateway-api.yml
+- import_tasks: helm-install.yml
+- import_tasks: cert-manager-install.yml
+

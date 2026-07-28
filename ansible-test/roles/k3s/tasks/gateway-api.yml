@@ -1,0 +1,19 @@
+- name: Crear configuración de Traefik para Gateway API
+  ansible.builtin.copy:
+    dest: /var/lib/rancher/k3s/server/manifests/traefik-config.yaml
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      apiVersion: helm.cattle.io/v1
+      kind: HelmChartConfig
+      metadata:
+        name: traefik
+        namespace: kube-system
+      spec:
+        valuesContent: |-
+          providers:
+            kubernetesGateway:
+              enabled: true
+  become: true
+

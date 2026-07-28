@@ -1,0 +1,14 @@
+---
+repo_path: "{{ ansible_env.HOME }}/homeserver-k3s"
+domain_name: "omp.lab"
+org_name: "OMP Homeserver"
+chart_namespace: "homeserver"
+storage: "/mnt/storage"
+iface_name: "ens33"
+ip_address_ant: "192.168.110.136"
+ip_address: "192.168.110.100"
+netmask: "255.255.255.0"
+gateway: "192.168.110.1"
+dns_servers: "8.8.8.8 1.1.1.1"
+APP_USER: user
+APP_PASSWORD: password

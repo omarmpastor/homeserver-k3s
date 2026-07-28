@@ -1,0 +1,27 @@
+- name: Instalar vim
+  ansible.builtin.apt:
+    name: vim
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Instalar git
+  ansible.builtin.apt:
+    name: git
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Instalar curl
+  ansible.builtin.apt:
+    name: curl
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Instalar python3-yaml para soporte de Helm en Ansible
+  ansible.builtin.apt:
+    name: python3-yaml
+    state: present
+    update_cache: yes
+  become: true

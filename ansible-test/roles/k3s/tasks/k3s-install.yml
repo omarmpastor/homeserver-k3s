@@ -1,0 +1,19 @@
+- name: Comprobar si K3s ya está instalado
+  ansible.builtin.command: k3s --version
+  register: k3s_check
+  failed_when: false
+  changed_when: false
+
+- name: Descargar e instalar K3s
+  ansible.builtin.shell: |
+    curl -sfL https://get.k3s.io | sh -
+  when: k3s_check.rc != 0
+  become: true
+
+- name: Asegurar que el servicio K3s esté iniciado y habilitado
+  ansible.builtin.systemd:
+    name: k3s
+    state: started
+    enabled: true
+  become: true
+

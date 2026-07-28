@@ -1,0 +1,2 @@
+---
+- import_tasks: configure-cert-manager-and-gateway.yml

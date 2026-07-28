@@ -1,0 +1,28 @@
+---
+- name: Comprobar si existe el punto de montaje {{ storage }}
+  ansible.builtin.stat:
+    path: "{{ storage }}"
+  register: storage_check
+
+- name: Validar que {{ storage }} existe y es un directorio
+  ansible.builtin.assert:
+    that:
+      - storage_check.stat.exists
+      - storage_check.stat.isdir
+    fail_msg: "ERROR: La ruta {{ storage }} no existe o no está montada. Por favor, monta el disco antes de continuar."
+    success_msg: "Punto de montaje {{ storage }} verificado correctamente."
+
+- name: Crear subdirectorios de almacenamiento y aplicar permisos (1000:1000)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "1000"
+    group: "1000"
+    mode: '0755'
+    recurse: yes
+  become: true
+  loop:
+    - "{{ storage }}/torrents"
+    - "{{ storage }}/media/movies"
+    - "{{ storage }}/media/tv"
+    - "{{ storage }}/media/videos"
