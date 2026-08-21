@@ -62,9 +62,9 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "mi-chart.name" . }}-pvc-config
 
-        - name: customApps
-          # persistentVolumeClaim:
-          #   claimName: {{ include "mi-chart.name" . }}-pvc-customApps
+        # - name: customApps
+        #   persistentVolumeClaim:
+        #     claimName: {{ include "mi-chart.name" . }}-pvc-customApps
 
         - name: data
           hostPath:
