@@ -4,7 +4,7 @@
 
 Lo primero necesitamos conocer el password que nos ha puesto por defecto. Esto está en los logs del pod (Ejecutamos: `kubectl logs -n homeserver $(kubectl get pods -n homeserver -l app=qbittorrent -o name)`)
 
-Vamos a https://qbittorrent.omp.home
+Vamos a https://qbittorrent.example.local
 
 Entramos en la interfaz con `admin` y el password temporal que nos ha creado:
 - Vamos a Tools > Options > WebUI y cambiamos el password. Si no queremos que nos pida usuario y contraseña, marcamos: `Bypass authentication for clients in whitelisted IP subnets` y le añadimos nuestra red `192.168.1.0/24`
@@ -12,7 +12,9 @@ Entramos en la interfaz con `admin` y el password temporal que nos ha creado:
 
 ### Sonarr/Radarr
 
-Nos conectamos a https://radarr.omp.home para radarr y https://sonarr.omp.home para sonarr
+Nos conectamos a
+* https://radarr.example.local para radarr
+* https://sonarr.example.local para sonarr
 
 La primera vez que nos conectemos nos pedira que establezcamos un login:
 
@@ -23,7 +25,9 @@ La primera vez que nos conectemos nos pedira que establezcamos un login:
 
 Vamos a Settings -> Media Management -> Pinchamos en el icono de arriba "Show Advanced"
 - Dejamos marcado -> Use Hardlinks instead of Copy
-- Al final en el botón Add Root Folder, añadimos -> "/storage/Movies/" para radarr y "/storage/TV/"
+- Al final en el botón Add Root Folder, añadimos
+  - "/storage/Movies/" para radarr
+  - "/storage/TV/" para sonarr
 - Guardamos cambios
 
 Vamos a Settings -> Download Clients -> + -> qBittorrent
@@ -33,18 +37,19 @@ Vamos a Settings -> Download Clients -> + -> qBittorrent
 - Password: [password]
 - Dejamos marcado: Remove imported downloads from dowload client history
 
-Vamos a Settings -> Profiles -> Entramos a cada uno de ellos -> Language -> Spanish (sino no nos busara en prowlarr en español)
+(solo radarr) Vamos a Settings -> Profiles -> Entramos a cada uno de ellos -> Language -> Spanish (sino no nos busara en prowlarr en español)
 
 ### Jackett
 
-Nos conectamos a https://jackett.omp.home
+Nos conectamos a https://jackett.example.local
 
 Ponemos una contraseña de administrador en [Admin password]
+
 Pinchamos en Add Indexer -> DonTorrent (tarda en añadirlo, comprueba un rato)
 
 ### Prowlarr
 
-Nos conectamos a https://prowlarr.omp.home
+Nos conectamos a https://prowlarr.example.local
 
 La primera vez que nos conectemos nos pedira que establezcamos un login:
 
@@ -54,14 +59,14 @@ La primera vez que nos conectemos nos pedira que establezcamos un login:
 * Password: [password]
 
 Vamos a Settings -> Apps -> Añadimos Radarr
-Prowlarr Server: https://prowlarr:9696
-Radarr Server: https://radarr:7878
-API Key: Vamos a radarr -> Settings -> General -> API Key y la copiamos
+* Prowlarr Server: https://prowlarr:9696
+* Radarr Server: https://radarr:7878
+* API Key: Vamos a radarr -> Settings -> General -> API Key y la copiamos
 
 Vamos a Settings -> Apps -> Añadimos Sonarr
-Prowlarr Server: https://prowlarr:9696
-Sonarr Server: https://sonarr:8989
-API Key: Vamos a sonarr -> Settings -> General -> API Key y la copiamos
+* Prowlarr Server: https://prowlarr:9696
+* Sonarr Server: https://sonarr:8989
+* API Key: Vamos a sonarr -> Settings -> General -> API Key y la copiamos
 
 Vamos a Settings -> Download Clients -> + -> qBittorrent
 - Host: qbittorrent
@@ -86,7 +91,7 @@ Ahora vamos a Indexers (No a Settings > Indexers) -> Add Indexer y añadimos los
 
 Arrancamos el proyecto: Desde arcane > Proyectos > Elegimos jellyfin > Subir
 
-Vamos a https://jellyfin.omp.home
+Vamos a https://jellyfin.example.local
 
 Usamos el asistente para configurar el servidor estableciendo en Español y poniendo usuario y contraseña:
 * Username: [username]
@@ -106,13 +111,17 @@ Vamos a Panel de Control > Usuarios y añadimos omar
 
 Arrancamos el proyecto: Desde arcane > Proyectos > Elegimos gitea > Subir
 
-Vamos a https://gitea.omp.home
+Vamos a https://gitea.example.local
 
 Ahora nos sale la configuracion por defecto, vamos bajo del todo y pinchamos en "Instalar Gitea"
 
 Nos aparece para crear un usuario:
 * Username: [username]
-* Email: [username]@omp.home
+* Email: [username]@example.local
 * Password: [password]
 
-Ahora vamos a https://gitea.omp.home/-/admin/users y creamos un usuario
+Ahora vamos a https://gitea.example.local/-/admin/users y creamos un usuario
+
+## Nextcloud
+
+Vamos a https://nextcloud.example.local
