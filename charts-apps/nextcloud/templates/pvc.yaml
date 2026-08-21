@@ -9,3 +9,14 @@ spec:
   resources:
     requests:
       storage: {{ .Values.pvc.storageSize }}
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: {{ include "mi-chart.name" . }}-pvc-customApps
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: {{ .Values.pvc.storageSize }}

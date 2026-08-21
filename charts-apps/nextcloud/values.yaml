@@ -22,7 +22,8 @@ pvc:
   storageSize: 1Gi
 
 storage:
-  mountPathConfig: image_path_config
+  mountPathConfig: "/var/www/html/config"
+  mountPathCustomApps: "/var/www/html/custom_apps"
   localStoragePath: "/mnt/storage"
 
 configService:
