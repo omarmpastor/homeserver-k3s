@@ -76,14 +76,13 @@ Vamos a Settings -> Download Clients -> + -> qBittorrent
 
 Ahora vamos a Indexers (No a Settings > Indexers) -> Add Indexer y añadimos los que queramos
 
-* Elitetorrent-wf
-* MoviesDVDR
-* Vamos a añadir DonTorrent desde Jackett (no me va!!):
+* Elitetorrent-wf (Ya no existe, no podremos añadirlo)
+* Vamos a añadir DonTorrent desde Jackett:
   * Le damos a añadir y elegimos "Generic Torznab"
   * Name: DonTorrent
   * Enable: Activado
   * Redirect: Desactivado
-  * URL (hay un botón "Copy Torznab Feed" en jackett): https://[IP_SERVIDOR]:9117/api/v2.0/indexers/dontorrent/results/torznab/
+  * URL (hay un botón "Copy Torznab Feed" en jackett, pero sustituimos el dominio por http://jackett-svc:9117): http://jackett-svc:9117/api/v2.0/indexers/dontorrent/results/torznab/
   * API Key: Copiamos la API key de Jackett
   * Pinchamos en Test y Guardamos
 
