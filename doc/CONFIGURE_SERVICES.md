@@ -31,7 +31,7 @@ Vamos a Settings -> Media Management -> Pinchamos en el icono de arriba "Show Ad
 - Guardamos cambios
 
 Vamos a Settings -> Download Clients -> + -> qBittorrent
-- Host: qbittorrent
+- Host: qbittorrent-svc
 - Port: 8090
 - Username: [username]
 - Password: [password]
@@ -85,6 +85,7 @@ Ahora vamos a Indexers (No a Settings > Indexers) -> Add Indexer y añadimos los
   * URL (hay un botón "Copy Torznab Feed" en jackett, pero sustituimos el dominio por http://jackett-svc:9117): http://jackett-svc:9117/api/v2.0/indexers/dontorrent/results/torznab/
   * API Key: Copiamos la API key de Jackett
   * Pinchamos en Test y Guardamos
+* Podemos añadir más desde Jackett utilizando el mismo procedimiento: DivxTotal, Wolfmax4K, etc
 
 ## Jellyfin
 

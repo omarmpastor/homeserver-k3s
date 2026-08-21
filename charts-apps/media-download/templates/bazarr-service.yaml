@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.bazarr.appName }}-svc
+
+spec:
+  selector:
+    app: {{ .Values.bazarr.appName }}
+  
+  ports:
+    - name: {{ .Values.bazarr.service.portHttpName }}
+      port: {{ .Values.bazarr.service.port }}
+      targetPort: {{ .Values.bazarr.service.targetPort }}
+  
+  type: {{ .Values.bazarr.service.type }}

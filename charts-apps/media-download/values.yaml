@@ -102,6 +102,27 @@ radarr:
   storage:
     mountPathConfig: "/config"
 
+bazarr:
+  appName: bazarr
+  
+  replicaCount: 1
+  
+  image:
+    repository: "lscr.io/linuxserver/bazarr"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  service:
+    type: ClusterIP
+    port: 6767
+    targetPort: 6767
+    portHttpName: http
+  
+  pvc:
+    storageSize: 1Gi
+
+  storage:
+    mountPathConfig: "/config"
 
 httpRoute:
   parentRefs:
