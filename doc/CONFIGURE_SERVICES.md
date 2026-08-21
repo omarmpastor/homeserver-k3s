@@ -87,6 +87,57 @@ Ahora vamos a Indexers (No a Settings > Indexers) -> Add Indexer y añadimos los
   * Pinchamos en Test y Guardamos
 * Podemos añadir más desde Jackett utilizando el mismo procedimiento: DivxTotal, Wolfmax4K, etc
 
+## Bazarr
+
+Al arrancar nos aparece en esta página: https://bazarr.omp.lab/settings/general
+- Security > Authentication > Form
+- Establecemos > Username y Password
+- Guardamos
+
+
+Vamos a https://bazarr.omp.lab/settings/languages
+- Languages Filter > Escribimos > Spanish y English (Nos autocompleta)
+- Languages Profile > añadimos 3 (por separado, habra que pinchar en Add new profile tres veces):
+    - Name: Spanish, Tag es
+    - Add Language: Seleccionamos Spanish, Normal or hearing-impaired
+    - Name: English, Tag en
+    - Add Language: Seleccionamos English, Normal or hearing-impaired
+    - Name: Spanish-English, Tag vacio
+    - Add Language: Seleccionamos Spanish, Normal or hearing-impaired
+    - Add Language: Seleccionamos English, Normal or hearing-impaired
+- Default Language Profiles For Newly Added Shows
+    - Activamos movies y series y establecemos Spanish-English
+
+Guardamos (arriba a la izquierda hay un icono de guardar)
+
+Vamos a https://bazarr.omp.lab/settings/sonarr
+- Lo activamos
+- Address: sonarr-svc
+- API Key: Ponemos lo que hay en En Sonarr > Settings > General > API Key
+- Path Mappings (No aparecera hasta que guardemos)
+    - Sonar: /storage/TV/ - Bazarr: /storage/TV/
+- Guardamos
+
+Vamos a https://bazarr.omp.lab/settings/radarr
+- Lo activamos
+- Address: radarr-svc
+- API Key: Ponemos lo que hay en En Radarr > Settings > General > API Key
+- Path Mappings (No aparecera hasta que guardemos)
+- Radarr: /storage/Movies/ - Bazarr: /storage/movies/
+- Guardamos
+
+
+Vamos a https://bazarr.omp.lab/settings/providers
+- Añadimos > Subtitulamos.tv
+- Añadimos > Supersubtitles
+
+Vamos a https://bazarr.omp.lab/series
+- Marcamos el icono de la izquierda "Mass edit" para establecer en todos Spanish-English
+
+Vamos a https://bazarr.omp.lab/movies
+- Marcamos el icono de la izquierda "Mass edit" para establecer en todos Spanish-English
+
+
 ## Jellyfin
 
 Arrancamos el proyecto: Desde arcane > Proyectos > Elegimos jellyfin > Subir
