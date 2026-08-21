@@ -19,6 +19,7 @@ Vamos a instalar las apps
 
 ```bash
 helm install dashboard charts-apps/dashboard --namespace homeserver --set httpRoute.domain="example.local"
+helm install nextcloud charts-apps/nextcloud --namespace homeserver --set httpRoute.domain="example.local" --set configService.user="user" --set configService.password="password"
 helm install gitea charts-apps/gitea --namespace homeserver --set httpRoute.domain="example.local"
 helm install pihole charts-apps/pihole --namespace homeserver --set httpRoute.domain="example.local"
 helm install jellyfin charts-apps/jellyfin --namespace homeserver --set httpRoute.domain="example.local"
@@ -28,6 +29,7 @@ helm install media-download charts-apps/media-download --namespace homeserver --
 Ahora tenemos que añadir a nuestro DNS las apps
 * pihole.example.local
 * dashboard.example.local
+* nextcloud.example.local
 * gitea.example.local
 * qbittorrent.example.local
 * jellyfin.example.local

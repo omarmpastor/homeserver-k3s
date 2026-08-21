@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mi-chart.name" . }}-deployment
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ include "mi-chart.name" . }}
+  
+  template:
+    metadata:
+      labels:
+        app: {{ include "mi-chart.name" . }}
+    
+    spec:      
+      containers:
+        - name: {{ include "mi-chart.name" . }}
+          image: {{ printf "%s:%s" .Values.image.repository .Values.image.tag | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          env:
+            - name: PUID
+              value: "1000"
+            
+            - name: PGID
+              value: "1000"
+            
+            - name: TZ
+              value: Europe/Madrid
+            
+            - name: SQLITE_DATABASE
+              value: dbnextcloud
+
+            - name: NEXTCLOUD_ADMIN_USER
+              value: {{ .Values.configService.user }}
+
+            - name: NEXTCLOUD_ADMIN_PASSWORD
+              value: {{ .Values.configService.password }}
+
+            - name: NEXTCLOUD_TRUSTED_DOMAINS
+              value: {{ printf "%s %s.%s" .Values.configService.ip (include "mi-chart.name" .) .Values.httpRoute.domain | quote }}
+          
+          ports:
+            - name: {{ .Values.service.portHttpName }}
+              containerPort: {{ .Values.service.targetPort }}
+          
+          volumeMounts:
+            - name: config
+              mountPath: {{ .Values.storage.mountPathConfig }}
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "mi-chart.name" . }}-pvc-config
+
+
+# volumes:
+#       - nextcloud_config:/var/www/html/config:Z
+#       - nextcloud_custom_apps:/var/www/html/custom_apps:Z
+#       - ${STORAGE}/nextcloud_data:/var/www/html/data:Z
+# environment:
+#   - SQLITE_DATABASE=dbnextcloud
+#   - NEXTCLOUD_ADMIN_USER=${APP_USER}
+#   - NEXTCLOUD_ADMIN_PASSWORD=${APP_PASSWORD}
+#   - NEXTCLOUD_TRUSTED_DOMAINS=${IP} nextcloud.omp.home

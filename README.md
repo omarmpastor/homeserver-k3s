@@ -77,12 +77,12 @@ mkdir -p /mnt/storage/media/{movies,tv,videos}
 sudo chown -R 1000:1000 /mnt/storage/torrents
 sudo chown -R 1000:1000 /mnt/storage/media
 
+mkdir -p /mnt/storage/nextcloud-data
+sudo chown -R 33:33 /mnt/storage/nextcloud-data
+# 33 es el usuario www-data de apache
+
 # mkdir -p /mnt/storage/sftpgo
 # sudo chown -R 1000:1000 /mnt/storage/sftpgo
-
-# mkdir -p /mnt/storage/nextcloud-data
-# sudo chown -R 33:33 /mnt/storage/nextcloud-data
-# 33 es el usuario www-data de apache
 ```
 
 ## Instalamos K3s
@@ -169,7 +169,7 @@ Exportamos nuestra CA para instalarlo en equipos (entidades raiz de confianza)
 ```bash
 kubectl get secret internal-root-ca-secret \
   -n cert-manager \
-  -o jsonpath='{.data.tls\.crt}' | base64 -d > homeserver-root-ca.crt
+  -o jsonpath='{.data.tls\.crt}' | base64 -d > ../homeserver-root-ca.crt
 ```
 
 Ahora añadimos las apps desde [doc/ADD_APPS.md](https://github.com/omarmpastor/homeserver-k3s/blob/main/doc/ADD_APPS.md)
